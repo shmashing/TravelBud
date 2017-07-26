@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>BLANK_TITLE</title>
+  <meta name="description" content="BLANK DESCRIPTION">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'users/css/main.css'%}" media="screen" title="no title"  charset="utf-8">
+</head>
+<a href="{% url 'books:add' %}" class='book add_book_link'>Add Book and Review</a>
+<a href="{% url 'books:home' %}" class='book add_book_link home'>Home</a>
+<div class='header'>
+  <form action='/logout'>
+    <input type='submit' class='sign_out_button' value='Sign Out'>
+  </form>
+</div>
+<body>
+
+<div class='recents_box'>
+  <h3 class='greeting'>Username: {{user.username}}</h3>
+  <h3 class='greeting'>Name: {{user.first_name}} {{user.last_name}}</h3>
+  <h3 class='greeting'>Email: {{user.email}}</h3>
+  <h3 class='greeting'>Number of reviews: {{ review_count }}</h3>
+
+  <h4 class='greeting'>Posted reviews on the following books:</h2>
+  {% for review in user_reviews %}
+    <a href="{% url 'books:bookPage' id=review.book.id %}" class='book_link post_link'>{{review.book.title}}</a>
+  {% endfor %}
+</div>
+</body>
+</html>

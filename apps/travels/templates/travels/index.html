@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>BLANK_TITLE</title>
+  <meta name="description" content="BLANK DESCRIPTION">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'travels/css/main.css'%}" media="screen" title="no title"  charset="utf-8">
+</head>
+<body>
+<h2>Hello, {{user.first_name}}</h2>
+<form action="{% url 'users:logout' %}">
+  <input type='submit' value='Sign Out'>
+</form>
+
+<h4>Your trip schedules:</h4>
+<table style='padding: 30px;'>
+  <thead>
+    <th>Destination</th>
+    <th>Travel Start Date</th>
+    <th>Travel End Date</th>
+    <th>Plan</th>
+  </thead>
+
+  <tbody>
+    {% for travel in myTravels %}
+      <tr>
+        <td><a href="{% url 'travel:travelPage' id=travel.id %}">{{travel.destination}}</a></td>
+        <td>{{travel.start}}</td>
+        <td>{{travel.end}}</td>
+        <td>{{travel.plans}}</td>
+      </tr>
+    {% endfor %}
+    {% for join in myJoinedTravels %}
+      <tr>
+        <td><a href="{% url 'travel:travelPage' id=join.travel.id %}">{{join.travel.destination}}</a></td>
+        <td>{{join.travel.start}}</td>
+        <td>{{join.travel.end}}</td>
+        <td>{{join.travel.plans}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h4>Other trip schedules:</h4>
+<table style='padding: 30px;'>
+  <thead>
+    <th>Name</th>
+    <th>Destination</th>
+    <th>Travel Start Date</th>
+    <th>Travel End Date</th>
+    <th>Plan</th>
+    <th>Do you wanna join?</th>
+  </thead>
+
+  <tbody>
+    {% for travel in otherTravels %}
+      {% if user.id not in travel.joinedUsers%}
+        <tr>
+          <td>{{travel.user.first_name}}</td>
+          <td><a href="{% url 'travel:travelPage' id=travel.id %}">{{travel.destination}}</a></td>
+          <td>{{travel.start}}</td>
+          <td>{{travel.end}}</td>
+          <td>{{travel.plans}}</td>
+          <td><a href="{% url 'travel:addUser' id=travel.id %}">Join</a><td>
+        </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
+</table>
+
+<a href="{% url 'travel:addPlans' %}">Add travel plans!</a>
+</body>
+</html>
